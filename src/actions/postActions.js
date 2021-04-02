@@ -1,4 +1,4 @@
-import { FETCH_POSTS, NEW_POST } from './types';
+import { FETCH_POSTS, NEW_POST,SEARCH_POST } from './types';
 
 export const fetchPosts = () => dispatch => {
   fetch('https://jsonplaceholder.typicode.com/posts')
@@ -27,3 +27,13 @@ export const createPost = postData => dispatch => {
       })
     );
 };
+
+//search the exsisting list from state.
+
+export const searchPost = term => dispatch =>{
+  dispatch({
+    type:SEARCH_POST,
+    payload:term
+  })
+
+}
