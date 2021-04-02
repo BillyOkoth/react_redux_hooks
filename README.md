@@ -1,6 +1,7 @@
 # Redux Crash Course
 
-> Code from the "Redux Crash Course With React" video. Simple implementation of Redux using a couple React components.
+>Implementation of Redux and Hooks in React
+>Functionality was main concern not style
 
 ## Quick Start
 
