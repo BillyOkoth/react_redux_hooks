@@ -1,4 +1,4 @@
-# Redux Crash Course
+# React Readux Hooks Implementation.
 
 >Implementation of Redux and Hooks in React
 >Functionality was main concern not style
