@@ -1,70 +1,65 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createPost } from '../actions/postActions';
+import React,{Component,useEffect,useState}  from 'react';
+import {useDispatch,useSelector} from 'react-redux';
+import {useForm} from 'react-hook-form';
+import { createPost, searchPost } from '../actions/postActions';
 
-class PostForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: '',
-      body: ''
-    };
+// new implementation using react hooks.
 
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+const PostForm = () =>{ 
+  const poster = useSelector((state) =>state.posts);
+  const [posts, setState] = useState(poster.items);  
+  
+  const {register,handleSubmit,reset} = useForm(); 
+  
+  
+  const dispatch = useDispatch();
+
+  //submit
+  const onSubmit = (data)=>{   
+
+    setState(posts => [...posts,data]); 
+    dispatch(createPost(data));
+    reset();
+  
+  }
+  //search term using reducers
+  const onChange = (event)=>{
+    console.log('search',event.target.value);
+    let term = event.target.value;
+    dispatch(searchPost(term));
   }
 
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
 
-  onSubmit(e) {
-    e.preventDefault();
-
-    const post = {
-      title: this.state.title,
-      body: this.state.body
-    };
-
-    this.props.createPost(post);
-  }
-
-  render() {
-    return (
+  return(
+    <div>
+    <h1>Add Post</h1>    
+    <hr/>
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete ="off">
       <div>
-        <h1>Add Post</h1>
-        <form onSubmit={this.onSubmit}>
-          <div>
-            <label>Title: </label>
-            <br />
-            <input
-              type="text"
-              name="title"
-              onChange={this.onChange}
-              value={this.state.title}
-            />
-          </div>
-          <br />
-          <div>
-            <label>Body: </label>
-            <br />
-            <textarea
-              name="body"
-              onChange={this.onChange}
-              value={this.state.body}
-            />
-          </div>
-          <br />
-          <button type="submit">Submit</button>
-        </form>
+        <label>Title: </label>
+        <br />
+        <input
+          type="text"
+          name="title"
+          ref = {register}         
+        />
       </div>
-    );
-  }
+      <br />
+      <div>
+        <label>Body: </label>
+        <br />
+        <textarea
+          name="body"
+          ref = {register}
+        />
+      </div>
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  );
+
 }
 
-PostForm.propTypes = {
-  createPost: PropTypes.func.isRequired
-};
 
-export default connect(null, { createPost })(PostForm);
+export default PostForm;
